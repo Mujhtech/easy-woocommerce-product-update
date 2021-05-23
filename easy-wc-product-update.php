@@ -15,8 +15,17 @@ WC tested up to: 4.2
  */
 defined('ABSPATH') || die('Direct access is not allow');
 
+//define api url
+define(API_URL, "https://mujh.tech");
+
 
 register_activation_hook( __FILE__, 'ewcpu_admin_notice_example_activation_hook' );
+
+register_activation_hook(__FILE__, 'ewcpu_event_activation');
+
+register_deactivation_hook( __FILE__, 'ewcpu_event_deactivation' );
+
+add_action('ewcpu_product_update_event', 'ewcpu_do_this_daily');
  
 
 function ewcpu_admin_notice_example_activation_hook() {
@@ -63,4 +72,24 @@ function ewcpu_admin_error_notice() { ?>
         </div>
 
 <?php
+}
+ 
+function ewcpu_event_activation() {
+
+    if (! wp_next_scheduled ( 'ewcpu_product_update_event' )) {
+
+    	wp_schedule_event(time(), 'daily', 'ewcpu_product_update_event');
+
+    }
+
+}
+
+function ewcpu_event_deactivation() {
+
+    wp_clear_scheduled_hook( 'ewcpu_product_update_event' );
+    
+}
+ 
+function ewcpu_do_this_daily() {
+    // do something every hour
 }
