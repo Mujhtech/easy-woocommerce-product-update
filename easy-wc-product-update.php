@@ -16,6 +16,51 @@ WC tested up to: 4.2
 defined('ABSPATH') || die('Direct access is not allow');
 
 
-register_activation_hook( __FILE__, 'moowpg_admin_notice_example_activation_hook' );
+register_activation_hook( __FILE__, 'ewcpu_admin_notice_example_activation_hook' );
  
 
+function ewcpu_admin_notice_example_activation_hook() {
+
+    set_transient( 'ewcpu-admin-notice-example', true, 5 );
+
+}
+
+if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+
+	add_action( 'admin_notices', 'ewcpu_admin_error_notice' );
+
+	return;
+
+} else {
+
+	add_action( 'admin_notices', 'ewcpu_admin_success_notice' );
+
+}
+
+function ewcpu_admin_success_notice() { 
+
+	if( get_transient( 'ewcpu-admin-notice-example' ) ){
+	?>
+
+        <div class="updated notice is-dismissible">
+            <p>Thank you for using this plugin! <strong>You are awesome</strong>.</p>
+        </div>
+
+<?php
+		delete_transient( 'ewcpu-admin-notice-example' );
+	}
+}
+
+function ewcpu_admin_error_notice() { ?>
+
+        <div class="error">
+            <p>
+                WooCommerce plugin is not activated. Please install and activate it to use <strong>
+                	Easy Woocommerce Product Update
+                </strong>
+               
+            </p>
+        </div>
+
+<?php
+}
