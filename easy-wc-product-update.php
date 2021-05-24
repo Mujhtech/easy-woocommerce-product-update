@@ -16,7 +16,7 @@ WC tested up to: 4.2
 defined('ABSPATH') || die('Direct access is not allow');
 
 //define api url
-define(API_URL, "https://mujh.tech");
+define("API_URL", "https://mujh.tech");
 
 
 register_activation_hook( __FILE__, 'ewcpu_admin_notice_example_activation_hook' );
