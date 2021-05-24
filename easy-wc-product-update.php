@@ -87,9 +87,38 @@ function ewcpu_event_activation() {
 function ewcpu_event_deactivation() {
 
     wp_clear_scheduled_hook( 'ewcpu_product_update_event' );
-    
+
 }
  
 function ewcpu_do_this_daily() {
-    // do something every hour
+
+
+	$headers = array(
+        'Content-Type'  => 'application/json',
+    );
+
+    $args = array(
+    	'headers' => $headers,
+        'timeout' => 60,
+    );
+
+    $request = wp_remote_get( API_URL, $args );
+
+    if ( ! is_wp_error( $request ) && 200 === wp_remote_retrieve_response_code( $request ) ) {
+
+        $response = json_decode( wp_remote_retrieve_body( $request ), true );
+
+	    if ( 'success' == $response['data']['status'] ) {
+
+	            
+
+
+
+	    } else {
+
+	          
+
+	    }
+
+	}
 }
