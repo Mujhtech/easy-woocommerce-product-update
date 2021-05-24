@@ -110,9 +110,48 @@ function ewcpu_do_this_daily() {
 
 	    if ( 'success' == $response['data']['status'] ) {
 
-	            
 
+	    	foreach ($response as $key => $value) {
 
+	    		if () {
+
+	    			$pid = wc_get_product_id_by_sku( $sku );
+	    			$product = wc_get_product( $pid );
+					$stock_quantity = $product->get_stock_quantity();
+					$stock_status   = $product->get_stock_status();
+					$product->set_stock_quantity();
+					$product->set_stock_status('outofstock');
+					$product->save();
+
+		    	} else {
+
+		    		$post_id = wp_insert_post( array(
+		                'post_title' => $title,
+		                'post_type' => 'product',
+		                'post_status' => 'publish',
+		                'post_content' => $body,
+		            ));
+
+		            $product = wc_get_product( $post_id );
+		            $product->set_sku( $sku );
+		            $product->set_status("publish");
+					$product->set_catalog_visibility('visible');
+					$product->set_description("Product Description");
+					$product->set_price(10.55);
+					$product->set_regular_price(10.55);
+					$product->set_manage_stock(true);
+					$product->set_stock_quantity(10);
+					$product->set_stock_status('instock');
+					$product->set_backorders('no');
+					$product->set_reviews_allowed(true);
+					$product->set_sold_individually(false);
+					$product->set_category_ids(array(1,2,3));
+		            $product->save();
+
+		    	}
+
+	    		
+	    	}
 
 	    } else {
 
